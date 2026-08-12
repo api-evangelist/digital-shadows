@@ -1,0 +1,124 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  Digital Shadows' own published client source —
+  github.com/digitalshadows/splunk-soar-digitalshadows (dsapi/) and
+  github.com/digitalshadows/shadowline-api (shadowline/). The public API reference
+  is gated inside the customer portal, so these cross-cutting semantics are derived
+  from first-party code rather than from a docs page.
+api: SearchLight Portal API
+base_url: https://portal-digitalshadows.com/api/
+authentication:
+  style: http-basic
+  header: Authorization
+  value_form: 'Basic base64(<api_key>:<api_secret>)'
+  see: authentication/digital-shadows-authentication.yml
+media_types:
+  request: application/json
+  response: application/json
+  vendor_media_type: application/vnd.polaris-v{N}+json
+  vendor_media_type_observed: application/vnd.polaris-v38+json
+  vendor_media_type_note: >-
+    shadowline sets both Content-Type and Accept to
+    application/vnd.polaris-v38+json. The internal platform name is "Polaris" and
+    the integer after the -v is the API version — this is the provider's versioning
+    channel (see lifecycle/). The Splunk SOAR connector instead sends
+    Content-Type: application/json with Accept: */*, so the vendor media type
+    appears to be optional and the server negotiates a default.
+query_style:
+  name: POST-a-view
+  description: >-
+    Collection reads are POSTs to a `/find` sub-resource carrying a JSON "view"
+    object rather than GET query strings. Reads of a single object are plain GETs
+    on the resource path.
+  view_envelope:
+    filter: object — resource-specific predicate (dateRange, tags, types, severities, …)
+    sort: '{property: <field>, direction: ASCENDING|DESCENDING}'
+    pagination: '{offset: <int>, size: <int>}'
+    facets: 'array — optional aggregation buckets (e.g. RESULTS_TYPE)'
+    query: 'string — free-text term on /api/search/find'
+  example_shape: >-
+    {"filter":{...},"sort":{"property":"occurred","direction":"DESCENDING"},
+    "pagination":{"offset":0,"size":500}}
+pagination:
+  style: offset
+  request_fields:
+    offset: pagination.offset
+    size: pagination.size
+  request_location: JSON body
+  default_page_size: 500
+  observed_page_sizes: [12, 25, 50, 500]
+  response_fields:
+    current_page: 'currentPage: {offset, size}'
+    total: total
+  scroll_algorithm: >-
+    Clients advance by setting pagination.offset = currentPage.offset +
+    currentPage.size and stop when offset + size >= total. Implemented as
+    DSBaseService._scrolling_request.
+  cursor: false
+  link_header: false
+filtering:
+  location: request body (filter object)
+  date_windows:
+    style: ISO 8601 duration
+    examples: [P30D, P6M, ALL]
+    field_selector: dateRangeField
+    field_selector_values: [occurred, published, lastActive]
+  tag_operator:
+    field: tagOperator
+    values: [AND, OR]
+sorting:
+  fields: 'sort.property + sort.direction'
+  directions: [ASCENDING, DESCENDING]
+  common_properties: [occurred, published, lastActive, relevance, value]
+field_expansion:
+  supported: false
+  note: No expand / sparse-fieldset parameter appears in any first-party client.
+metadata:
+  supported: false
+  note: No customer-defined metadata field observed on any resource.
+request_tracing:
+  request_id_header: null
+  note: >-
+    The portal API's error envelope carries no request identifier. (The unrelated
+    api.searchlight.app host does emit a "request-id" field, but that host is not
+    attributable to Digital Shadows — see well-known/digital-shadows-well-known.yml.)
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No Idempotency-Key header, no idempotency parameter and no replay semantics
+    appear anywhere in the provider's published clients. Writes are limited to
+    review POSTs (/reviews on incidents and data-breach records), which are
+    append-style. No `type: Idempotency` pointer is emitted — the provider has no
+    idempotency contract to point at.
+versioning:
+  scheme: vendor media type
+  format: application/vnd.polaris-v{N}+json
+  current_observed: v38
+  in_path: false
+  see: lifecycle/digital-shadows-lifecycle.yml
+error_envelope:
+  shape: 'JSON object: {code, status, message}'
+  observed_example: >-
+    {"code":"PS491","status":401,"message":"Failed to authenticate, details are
+    either incorrect (username and/or password) or the account is locked/disabled.
+    Please contact drpsupport@reliaquest.com..."}
+  rfc9457: false
+  content_type: application/json;charset=UTF-8
+  see: errors/digital-shadows-problem-types.yml
+rate_limit_signaling:
+  documented_headers: []
+  exhaustion_status: 429
+  client_behaviour: >-
+    DSBaseService._scrolling_request catches HTTP 429 and sleeps 1 second before
+    resuming the scroll — the provider's own client treats 429 as retryable with a
+    fixed 1s backoff. No RateLimit-* or Retry-After header is read by any
+    first-party client, so no runtime rate-limit signal is known to be published.
+  see: rate-limits/digital-shadows-rate-limits.yml
+cross_links:
+  authentication: authentication/digital-shadows-authentication.yml
+  errors: errors/digital-shadows-problem-types.yml
+  lifecycle: lifecycle/digital-shadows-lifecycle.yml
+  rate_limits: rate-limits/digital-shadows-rate-limits.yml
+  data_model: data-model/digital-shadows-data-model.yml

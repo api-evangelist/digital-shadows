@@ -1,0 +1,102 @@
+generated: '2026-08-12'
+method: searched
+source: https://github.com/digitalshadows/shadowline-api
+cli:
+  name: shadowline
+  description: >-
+    ShadowLine — a command-line client for the Digital Shadows SearchLight Portal
+    API, written in Python 3 and published as source by Digital Shadows Ltd.
+  official: true
+  entry_point: shadowline
+  language: python
+  version: 0.0.1
+  last_commit: '2021-04-06'
+  license: Copyright (c) 2019 Digital Shadows Ltd
+  repo: https://github.com/digitalshadows/shadowline-api
+  package: packages/digital-shadows-packages.yml
+install:
+- method: pip (from source checkout)
+  command: sudo -H pip install .
+  platform: linux
+- method: pip (from source checkout)
+  command: py -3 -m pip install .
+  platform: windows
+  note: >-
+    Requires C++ 14.0 build tools and manual installation of numpy and
+    windows-curses first; the docs recommend Linux or WSL.
+credentials:
+  model: profile file
+  setup_command: shadowline setup_profile
+  prompts: [profile, username, password]
+  note: >-
+    "username" and "password" are the SearchLight portal API key and secret; they
+    are sent as HTTP Basic credentials. See authentication/digital-shadows-authentication.yml.
+  global_flags:
+  - flag: --profile
+    default: DEFAULT
+    description: Name of the stored credential profile to use.
+common_output_flags:
+- flag: --csv
+  description: Emit results as CSV.
+- flag: --json
+  description: Emit results as JSON.
+- flag: --raw
+  description: Emit the unmodified API response.
+- flag: --output_file
+  description: Write results to a file.
+commands:
+- group: credentials
+  commands:
+  - name: setup_profile
+    summary: Setup a profile to store API credentials.
+- group: data breach
+  commands:
+  - name: databreach_summary
+    summary: Retrieve a summary of data breaches.
+    api_path: /api/data-breach-summary
+  - name: databreach_list
+    summary: List the details of a specific breach.
+    options: ['--breach_id']
+    api_path: /api/data-breach/{id}
+  - name: databreach_usernames
+    summary: List usernames impacted by a specific breach.
+    api_path: /api/data-breach-usernames/find
+- group: infrastructure lookups
+  commands:
+  - name: domain_lookup
+    summary: Perform a DNS lookup for a domain.
+    api_path: /api/dns-lookup/{domain}
+  - name: domain_whois
+    summary: Look up the domain WHOIS information for a domain.
+    api_path: /api/domain-whois/{domain}
+  - name: ipaddr_whois
+    summary: Look up the WHOIS information for an IP address.
+    options: ['--ipaddr', '--input_file']
+    api_path: /api/ip-whois/{ip}
+- group: intelligence
+  commands:
+  - name: cve_search
+    summary: Look up a CVE.
+    api_path: /api/search/find
+  - name: threats
+    summary: Look up a threat record, optionally with its IOCs.
+    options: ['--incident_id', '--iocs']
+    api_path: /api/intel-threats/find
+  - name: incidents
+    summary: Retrieve all incidents or a single incident.
+    options: ['--incident_id', '--iocs']
+    api_path: /api/incidents/find
+  - name: intelligence
+    summary: Search through the Digital Shadows intelligence repository.
+    options: ['--incident_id', '--input_file', '--iocs']
+    api_path: /api/intel-incidents/find
+  - name: indicator
+    summary: Search for an IP address as an Indicator of Compromise.
+    options: ['--ipaddr', '--input_file']
+x-evidence:
+- url: https://raw.githubusercontent.com/digitalshadows/shadowline-api/master/shadowline/shadowline.py
+  http_status: 200
+- url: https://raw.githubusercontent.com/digitalshadows/shadowline-api/master/shadowline/sl_constants.py
+  http_status: 200
+- url: https://raw.githubusercontent.com/digitalshadows/shadowline-api/master/README.md
+  http_status: 200

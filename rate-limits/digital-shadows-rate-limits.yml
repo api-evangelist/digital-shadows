@@ -1,0 +1,38 @@
+generated: '2026-08-12'
+method: derived
+source: https://github.com/digitalshadows/splunk-soar-digitalshadows/blob/main/dsapi/service/ds_base_service.py
+limit_count: 0
+limits: []
+note: >-
+  Digital Shadows publishes no rate-limit numbers. The API reference is gated inside
+  the customer portal and no public page states a quota, window, or burst allowance,
+  so limit_count is an honest zero. What IS known is the exhaustion behaviour: the
+  provider's own Splunk SOAR connector branches on HTTP 429 while scrolling a
+  paginated collection and sleeps a fixed 1 second before resuming from the same
+  offset. That confirms 429 is the exhaustion status and that retry-after-backoff is
+  the intended client contract — but no first-party client reads a Retry-After or
+  RateLimit-* header, so no runtime rate-limit signal is known to be emitted.
+exhaustion:
+  status_code: 429
+  retry_after_header: unknown
+  documented: false
+  client_backoff:
+    strategy: fixed sleep
+    seconds: 1
+    resumes_from: currentPage.offset (scroll position preserved)
+    source: DSBaseService._scrolling_request
+response_headers:
+  observed: []
+  note: >-
+    An anonymous request to https://portal-digitalshadows.com/api/ returns 401
+    before any rate-limit accounting, so no RateLimit-*, X-RateLimit-* or
+    Retry-After header can be observed without credentials.
+throttling_hints:
+- >-
+  Default client page size is 500 items with offset pagination, so a full scroll of
+  a large collection is the most likely path to a 429.
+x-evidence:
+- url: https://raw.githubusercontent.com/digitalshadows/splunk-soar-digitalshadows/main/dsapi/service/ds_base_service.py
+  http_status: 200
+- url: https://portal-digitalshadows.com/api/
+  http_status: 401

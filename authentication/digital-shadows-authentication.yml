@@ -1,0 +1,67 @@
+generated: '2026-08-12'
+method: searched
+source: https://github.com/digitalshadows/splunk-soar-digitalshadows/blob/main/dsapi/service/ds_base_service.py
+docs: https://portal-digitalshadows.com/
+docs_access: gated
+docs_note: >-
+  The SearchLight API reference is published only inside the authenticated customer
+  portal (Stored Objects > Portal > SearchLight API doc). The auth model below is
+  read from Digital Shadows' own published client source, not from a public
+  reference page.
+summary:
+  types: [http]
+  http_schemes: [basic]
+  api_key_in: []
+  oauth2_flows: []
+  oauth2: false
+  oidc: false
+  mtls: false
+  note: >-
+    No OAuth 2.0, OpenID Connect or mTLS surface. Credentials are a portal-issued
+    API key + secret used as HTTP Basic username + password. There is consequently
+    no scope surface, so scopes/ is deliberately not emitted.
+schemes:
+- name: BasicAuth
+  type: http
+  scheme: basic
+  in: header
+  parameter: Authorization
+  value_form: 'Basic base64(<api_key>:<api_secret>)'
+  credentials:
+  - name: API key
+    issued_by: SearchLight portal
+    issuance: >-
+      Self-service inside the authenticated portal — the key and secret are read
+      from Stored Objects > Portal > SearchLight API doc. Third-party integration
+      guides (Sekoia, Axonius, ThreatConnect, Atlassian Marketplace) all instruct
+      customers to retrieve the key and secret from that portal page.
+  - name: API secret
+    issued_by: SearchLight portal
+  sources:
+  - https://github.com/digitalshadows/splunk-soar-digitalshadows/blob/main/dsapi/service/ds_base_service.py
+  - https://github.com/digitalshadows/shadowline-api/blob/master/shadowline/searchlight.py
+  evidence: >-
+    ds_base_service.DSBaseService builds
+    base64.b64encode(f"{ds_api_key}:{ds_api_secret_key}") and sends it as
+    'Authorization: Basic <hash>'. shadowline's SearchLightApi sets
+    requests.Session().auth = (username, password), the equivalent Basic tuple.
+validation:
+  endpoint: /api/session-user
+  method: GET
+  description: >-
+    First-party credential check — DSBaseService.valid_credentials() calls
+    /api/session-user and treats a 2xx as valid credentials.
+  source: https://github.com/digitalshadows/splunk-soar-digitalshadows/blob/main/dsapi/service/ds_base_service.py
+transport:
+  tls_required: true
+  observed_tls: TLSv1.3
+  see: security/digital-shadows-domain-security.yml
+x-evidence:
+- url: https://portal-digitalshadows.com/api/
+  http_status: 401
+  note: >-
+    Anonymous request returns {"code":"PS491","status":401,"message":"Failed to
+    authenticate, details are either incorrect (username and/or password) or the
+    account is locked/disabled..."} — confirming credential-pair authentication.
+- url: https://raw.githubusercontent.com/digitalshadows/splunk-soar-digitalshadows/main/dsapi/service/ds_base_service.py
+  http_status: 200

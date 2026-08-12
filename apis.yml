@@ -1,23 +1,135 @@
 aid: digital-shadows
 name: Digital Shadows
-description: 'Digital Shadows is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Digital Shadows is a London-founded digital risk protection (DRP) company
+  whose SearchLight platform monitors the open, deep and dark web for data leakage,
+  exposed credentials, brand impersonation, exposed infrastructure and threat-actor
+  activity affecting a customer''s organization. ReliaQuest acquired Digital Shadows
+  in July 2022 and the entity now trades as ReliaQuest UK Limited, with SearchLight
+  folded into ReliaQuest GreyMatter Digital Risk Protection. The SearchLight Portal
+  API remains live at portal-digitalshadows.com/api/ and is consumed by first-party
+  tooling (the shadowline Python CLI and the Splunk SOAR connector) and by a wide
+  third-party integration surface (Cortex XSOAR, ThreatConnect, Splunk, Sekoia,
+  Axonius, TheHive, Atlassian Marketplace). The API reference itself is published
+  only inside the authenticated customer portal.'
 url: https://raw.githubusercontent.com/api-evangelist/digital-shadows/refs/heads/main/apis.yml
+image: https://avatars.githubusercontent.com/u/11042971?v=4
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
 - Company
-apis: []
+- Cybersecurity
+- Threat Intelligence
+- Digital Risk Protection
+- Dark Web Monitoring
+- Data Breach
+- Brand Protection
+- Security Operations
+- Vulnerability Intelligence
+apis:
+- name: SearchLight Portal API
+  description: 'The Digital Shadows SearchLight Portal API — the REST surface behind
+    the SearchLight / GreyMatter DRP portal. Exposes incidents, intelligence incidents,
+    intelligence threats, data breaches and breach usernames, DNS and domain WHOIS
+    lookups, IP WHOIS, exposed infrastructure (ports, SSL, vulnerabilities), IOC
+    retrieval, and a cross-entity search endpoint. Authenticated with HTTP Basic
+    using a portal-issued API key and secret; versioned through a vendor media type
+    (application/vnd.polaris-vNN+json). The reference is published inside the
+    authenticated portal under Portal > SearchLight API doc, so there is no public
+    OpenAPI or reference page.'
+  humanURL: https://portal-digitalshadows.com/
+  baseURL: https://portal-digitalshadows.com/api/
+  tags:
+  - Threat Intelligence
+  - Digital Risk Protection
+  - Data Breach
+  - Incidents
+  properties:
+  - type: Authentication
+    url: authentication/digital-shadows-authentication.yml
+  - type: Conventions
+    url: conventions/digital-shadows-conventions.yml
+  - type: ErrorCatalog
+    url: errors/digital-shadows-problem-types.yml
+  - type: DataModel
+    url: data-model/digital-shadows-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/digital-shadows-domain-security.yml
 - type: Website
+  url: https://reliaquest.com/solutions/digital-risk-protection/
+- type: Portal
+  url: https://portal-digitalshadows.com/
+- type: GitHubOrganization
+  url: https://github.com/digitalshadows
+- type: Blog
+  url: https://reliaquest.com/blog/
+- type: PrivacyPolicy
+  url: https://reliaquest.com/privacy-policy/
+- type: StatusPage
+  url: https://status.digitalshadows.com/
+- type: Lifecycle
+  url: lifecycle/digital-shadows-lifecycle.yml
+- type: Packages
+  url: packages/digital-shadows-packages.yml
+- type: SDKs
+  url: packages/digital-shadows-packages.yml
+- type: CLI
+  url: cli/digital-shadows-cli.yml
+- type: Authentication
+  url: authentication/digital-shadows-authentication.yml
+- type: Conventions
+  url: conventions/digital-shadows-conventions.yml
+- type: ErrorCatalog
+  url: errors/digital-shadows-problem-types.yml
+- type: DataModel
+  url: data-model/digital-shadows-data-model.yml
+- type: Conformance
+  url: conformance/digital-shadows-conformance.yml
+- type: LLMsTxt
+  url: llms/digital-shadows-llms.txt
+- type: Plans
+  url: plans/digital-shadows-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/digital-shadows-rate-limits.yml
+- type: SecondaryMarket
   url: https://forgeglobal.com/digital-shadows_stock/
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v1
+x-contract-discovery:
+  checked: '2026-08-12'
+  result: no-public-machine-readable-contract
+  detail: >-
+    STEP 0b run in full against every known host. No OpenAPI/Swagger at
+    /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs, /docs
+    or /redoc on portal-digitalshadows.com (Angular SPA answers 200 with a
+    2,288-byte HTML shell for every path) or on the unattributed api.searchlight.app
+    (401 JSON on every path). No GraphQL surface. No MCP server. No A2A agent card
+    on either /.well-known/agent-card.json or the legacy /.well-known/agent.json —
+    the portal's 200s are SPA catch-alls, so nothing was written to a2a/. No
+    AsyncAPI and no webhook surface; every published integration polls. The
+    SearchLight API reference is served only inside the authenticated customer
+    portal under Stored Objects > Portal > SearchLight API doc.
+  evidence:
+  - url: https://portal-digitalshadows.com/openapi.json
+    status: 200
+    note: HTML SPA shell, does not parse as OpenAPI
+  - url: https://portal-digitalshadows.com/api/
+    status: 401
+  - url: https://api.searchlight.app/openapi.json
+    status: 401
+  - url: https://portal-digitalshadows.com/.well-known/agent-card.json
+    status: 200
+    note: HTML SPA shell, rejected as a false positive

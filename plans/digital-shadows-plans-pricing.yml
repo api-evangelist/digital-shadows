@@ -1,0 +1,25 @@
+generated: '2026-08-12'
+method: searched
+source: https://reliaquest.com/solution/digital-shadows/
+plan_count: 0
+currency: null
+plans: []
+note: >-
+  Digital Shadows publishes no public pricing. SearchLight was sold as an
+  enterprise subscription and, since the July 2022 ReliaQuest acquisition, is
+  delivered as ReliaQuest GreyMatter Digital Risk Protection — an add-on to a
+  GreyMatter subscription, quoted through sales. There is no pricing page, no
+  self-serve tier, no published quota and no overage schedule on any reachable
+  surface; every route ends at a demo request form. API access is included with a
+  DRP subscription rather than metered or sold separately, and the API key is
+  issued from inside the customer portal.
+enterprise_only: true
+contact_route: https://reliaquest.com/drp-gm-demo/
+x-evidence:
+- url: https://reliaquest.com/solution/digital-shadows/
+  http_status: 200
+- url: https://reliaquest.com/solutions/digital-risk-protection/
+  http_status: 200
+- url: https://portal-digitalshadows.com/
+  http_status: 200
+  note: Customer portal; no pricing surface, login required.

@@ -1,0 +1,75 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  Derived from Digital Shadows' first-party client source
+  (github.com/digitalshadows) and live probes of portal-digitalshadows.com. No
+  public API reference or compliance page was reachable to search against.
+note: >-
+  This is a derive-only conformance record. Digital Shadows publishes no
+  certification or compliance program page on any reachable public surface
+  (probe-security-programs.py returned vdp=none trust=none; reliaquest.com/trust,
+  /compliance, /certifications and /security all 404). No `type: Compliance` pointer
+  is emitted — asserting one without a published program would be fabrication.
+standards:
+- id: http-basic-auth
+  conforms: true
+  evidence: >-
+    RFC 7617 Basic credentials — Authorization: Basic base64(key:secret) in
+    dsapi/service/ds_base_service.py.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 surface in any first-party client; no /.well-known/oauth-authorization-server.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration is not served on any host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors are a vendor JSON envelope {code,status,message} with
+    Content-Type application/json;charset=UTF-8, not application/problem+json.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt is not served (SPA shell 200 on the portal host, 404 on reliaquest.com).
+- id: rfc8615-well-known
+  conforms: false
+  evidence: No /.well-known/ document is served on any host.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No deprecation policy or Sunset header support is published.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI/Swagger document at any probed location on the API host, the portal
+    host, or the docs surface. The reference is gated inside the portal.
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface is documented; integrations poll.
+- id: media-type-versioning
+  conforms: true
+  evidence: >-
+    application/vnd.polaris-v38+json — RFC 6838 vendor tree with an embedded
+    version, used as the API's version channel.
+- id: offset-pagination
+  conforms: true
+  evidence: >-
+    pagination {offset,size} in the request body, currentPage {offset,size} + total
+    in the response.
+- id: idempotency
+  conforms: false
+  evidence: No idempotency key, header or replay contract in any first-party client.
+- id: tls-1.3
+  conforms: true
+  evidence: security/digital-shadows-domain-security.yml
+compliance_program:
+  published: false
+  certifications: []
+  trust_center: null
+  probe:
+    script: 0-working/probe-security-programs.py
+    result: vdp=none trust=none
+    checked: '2026-08-12'
+  note: >-
+    Digital Shadows historically held ISO 27001 as an independent company, but no
+    currently reachable public page states it, so nothing is recorded here. If
+    ReliaQuest publishes a trust center covering the DRP service, this file should
+    be upgraded to method: searched and a `type: Compliance` pointer added.

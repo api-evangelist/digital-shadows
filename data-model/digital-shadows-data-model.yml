@@ -1,0 +1,201 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  github.com/digitalshadows/splunk-soar-digitalshadows — dsapi/model/ and
+  dsapi/service/, plus github.com/digitalshadows/shadowline-api sl_constants.py.
+  Derived from the provider's own client model classes and endpoint constants, not
+  from an OpenAPI (none is published).
+api: SearchLight Portal API
+base_url: https://portal-digitalshadows.com/api/
+confidence: medium
+confidence_note: >-
+  Entities and endpoints are taken verbatim from first-party source. Field-level
+  attributes are NOT enumerated here because the object reference is gated inside
+  the customer portal; only relationships that are explicit in the URL structure or
+  in a model class are recorded.
+entities:
+- name: Incident
+  description: >-
+    A digital-risk incident raised against the customer's organization
+    (data leakage, brand protection, infrastructure exposure, physical security,
+    social-media compromise).
+  model: dsapi/model/incident.py
+  endpoints:
+  - method: POST
+    path: /api/incidents/find
+    summary: Search incidents with a filter/sort/pagination view.
+  - method: GET
+    path: /api/incidents/{incidentId}
+    summary: Read one incident.
+  - method: GET
+    path: /api/incidents/{incidentId}/reviews
+    summary: List analyst reviews on an incident.
+  - method: POST
+    path: /api/incidents/{incidentId}/reviews
+    summary: Post an analyst review on an incident.
+  classification:
+    types: [DATA_LEAKAGE, BRAND_PROTECTION, INFRASTRUCTURE, PHYSICAL_SECURITY, SOCIAL_MEDIA_COMPROMISE]
+    subtypes:
+      DATA_LEAKAGE: [CREDENTIAL_COMPROMISE, CUSTOMER_DETAILS, INTELLECTUAL_PROPERTY,
+        INTERNALLY_MARKED_DOCUMENT, LEGACY_MARKED_DOCUMENT, PROTECTIVELY_MARKED_DOCUMENT,
+        TECHNICAL_LEAKAGE, UNMARKED_DOCUMENT]
+      BRAND_PROTECTION: [BRAND_MISUSE, DEFAMATION, MOBILE_APPLICATION, NEGATIVE_PUBLICITY,
+        PHISHING_ATTEMPT, SPOOF_PROFILE]
+      INFRASTRUCTURE: [CVE, DOMAIN_CERTIFICATE_ISSUE, EXPOSED_PORT]
+      PHYSICAL_SECURITY: [COMPANY_THREAT, EMPLOYEE_THREAT, PERSONAL_INFORMATION]
+      SOCIAL_MEDIA_COMPROMISE: [CORPORATE_INFORMATION, PERSONAL_INFORMATION, TECHNICAL_INFORMATION]
+    source: https://github.com/digitalshadows/splunk-soar-digitalshadows/blob/main/digital_shadows_consts.py
+- name: IntelligenceIncident
+  description: >-
+    A threat-intelligence incident from the Digital Shadows intelligence repository
+    (as distinct from an incident raised against the customer).
+  model: dsapi/model/intelligence_incident.py
+  endpoints:
+  - method: POST
+    path: /api/intel-incidents/find
+    summary: Search intelligence incidents.
+  - method: GET
+    path: /api/intel-incidents/{intelIncidentId}
+    summary: Read one intelligence incident.
+  - method: POST
+    path: /api/intel-incidents/{intelIncidentId}/iocs/find
+    summary: Retrieve the indicators of compromise attached to an intelligence incident.
+- name: IntelligenceThreat
+  description: Threat / actor record in the intelligence repository.
+  endpoints:
+  - method: POST
+    path: /api/intel-threats/find
+    summary: Search threat records.
+  source: https://github.com/digitalshadows/shadowline-api/blob/master/shadowline/sl_constants.py
+- name: DataBreach
+  description: A known third-party data breach relevant to the customer's domains.
+  model: dsapi/model/data_breach.py
+  endpoints:
+  - method: POST
+    path: /api/data-breach/find
+    summary: Search data breaches.
+  - method: GET
+    path: /api/data-breach/{breachId}
+    summary: Read one data breach.
+  - method: POST
+    path: /api/data-breach/{breachId}/records
+    summary: List the exposed records inside a breach.
+  - method: GET
+    path: /api/data-breach-summary
+    summary: Aggregate summary across breaches.
+- name: DataBreachRecord
+  description: A single exposed credential/record within a data breach.
+  model: dsapi/model/data_breach_record.py
+  endpoints:
+  - method: POST
+    path: /api/data-breach-record/find
+    summary: Search breach records across all breaches.
+  - method: GET
+    path: /api/data-breach-record/{recordId}/reviews
+    summary: List reviews on a breach record.
+  - method: POST
+    path: /api/data-breach-record/{recordId}/reviews
+    summary: Post a review on a breach record.
+- name: DataBreachUsernameSummary
+  description: Per-username rollup of breach exposure.
+  model: dsapi/model/data_breach_username_summary.py
+  endpoints:
+  - method: POST
+    path: /api/data-breach-usernames/find
+    summary: Search usernames impacted across breaches.
+- name: Infrastructure
+  description: Exposed internet-facing ports detected on the customer's estate.
+  model: dsapi/model/infrastructure.py
+  endpoints:
+  - method: POST
+    path: /api/ip-ports/find
+    summary: Search exposed ports.
+- name: InfrastructureSsl
+  description: SSL/TLS certificate issues detected on the customer's estate.
+  model: dsapi/model/infrastructure_ssl.py
+  endpoints:
+  - method: POST
+    path: /api/secure-socket/find
+    summary: Search certificate issues.
+- name: InfrastructureVulnerability
+  description: CVE / vulnerability exposure detected on the customer's estate.
+  model: dsapi/model/infrastructure_vulnerabilities.py
+  endpoints:
+  - method: POST
+    path: /api/vulnerability/find
+    summary: Search vulnerability exposures.
+- name: SearchEntity
+  description: >-
+    Cross-entity search result — spans incidents, intel incidents, threats, breaches
+    and closed data stores. Filterable by tags, types, date range, incident type,
+    subtype and severity; sortable by relevance.
+  endpoints:
+  - method: POST
+    path: /api/search/find
+    summary: Search across all SearchLight entity types.
+- name: SessionUser
+  description: The authenticated caller. Used as the credential-validation probe.
+  endpoints:
+  - method: GET
+    path: /api/session-user
+    summary: Read the authenticated session user.
+- name: Lookup
+  description: >-
+    Stateless enrichment lookups exposed by the portal API (no stored entity).
+  endpoints:
+  - method: GET
+    path: /api/dns-lookup/{domain}
+    summary: DNS lookup for a domain.
+  - method: GET
+    path: /api/domain-whois/{domain}
+    summary: WHOIS for a domain.
+  - method: GET
+    path: /api/ip-whois/{ip}
+    summary: WHOIS for an IP address.
+  source: https://github.com/digitalshadows/shadowline-api/blob/master/shadowline/sl_constants.py
+relationships:
+- from: DataBreach
+  to: DataBreachRecord
+  type: has_many
+  via: /api/data-breach/{breachId}/records
+- from: DataBreachRecord
+  to: DataBreach
+  type: belongs_to
+  via: breachId path segment
+- from: DataBreachUsernameSummary
+  to: DataBreachRecord
+  type: has_many
+  via: username
+- from: Incident
+  to: Review
+  type: has_many
+  via: /api/incidents/{incidentId}/reviews
+- from: DataBreachRecord
+  to: Review
+  type: has_many
+  via: /api/data-breach-record/{recordId}/reviews
+- from: IntelligenceIncident
+  to: IOC
+  type: has_many
+  via: /api/intel-incidents/{intelIncidentId}/iocs/find
+- from: SearchEntity
+  to: Incident
+  type: has_one
+  via: polymorphic result type
+- from: SearchEntity
+  to: IntelligenceIncident
+  type: has_one
+  via: polymorphic result type
+- from: SearchEntity
+  to: DataBreach
+  type: has_one
+  via: polymorphic result type
+id_conventions:
+  note: >-
+    Breach ids are integers in the shadowline CLI (--breach_id typed int); incident
+    and intel-incident ids are passed as strings. No prefixed-id scheme is used.
+collection_envelope:
+  fields: [content, currentPage, total]
+  note: >-
+    Paged responses carry currentPage {offset,size} and total; the items array key
+    is not observable anonymously. See conventions/digital-shadows-conventions.yml.

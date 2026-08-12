@@ -1,0 +1,70 @@
+generated: '2026-08-12'
+method: searched
+source: https://status.digitalshadows.com/
+versioning:
+  scheme: vendor-media-type
+  format: application/vnd.polaris-v{N}+json
+  current_observed: v38
+  current_observed_source: https://github.com/digitalshadows/shadowline-api/blob/master/shadowline/sl_constants.py
+  in_path: false
+  docs: null
+  note: >-
+    The API version travels in the Content-Type / Accept vendor media type
+    ("polaris" is the internal platform name), not in the URL path. v38 is the
+    highest version seen in first-party source; no public version history,
+    supported-versions list, or version-support window is published.
+deprecation:
+  policy_url: null
+  sunset_header: unknown
+  deprecation_header: unknown
+  note: >-
+    No deprecation policy, Sunset/Deprecation header support (RFC 8594), or
+    end-of-life schedule is published on any public Digital Shadows or ReliaQuest
+    surface. No `type: Deprecation` pointer is emitted.
+sla:
+  url: null
+  uptime_target: null
+  note: SLA terms are contractual and not published publicly.
+status_page:
+  url: https://status.digitalshadows.com/
+  title: SearchLight Status Page
+  platform: StatusIQ (Site24x7 / Zoho)
+  http_status: 200
+  subscriptions: [email, RSS]
+  machine_readable_api: false
+  machine_readable_note: >-
+    StatusIQ does not expose the Statuspage.io-style /api/v2/summary.json contract —
+    https://status.digitalshadows.com/api/v2/status.json returns 404 and
+    /api/v2/summary.json returns an HTML page. Components and incident history are
+    human-readable only.
+  verified: '2026-08-12'
+company_lifecycle:
+  status: acquired
+  acquirer: ReliaQuest
+  acquired: '2022-07'
+  legal_entity: RELIAQUEST UK LIMITED
+  legal_entity_evidence: >-
+    TLS certificate on portal-digitalshadows.com — subject
+    C=GB, ST=London, City of, O=RELIAQUEST UK LIMITED, CN=portal-digitalshadows.com,
+    issued by Entrust OV TLS Issuing RSA CA 2.
+  successor_product: ReliaQuest GreyMatter Digital Risk Protection (DRP)
+  marketing_site: https://reliaquest.com/solution/digital-shadows/
+  marketing_site_note: >-
+    digitalshadows.com no longer resolves to an A record — the apex retains AWS
+    Route 53 nameservers but serves nothing. The brand's surviving surfaces are
+    portal-digitalshadows.com (the live customer portal + API),
+    status.digitalshadows.com (the SearchLight status page), and
+    github.com/digitalshadows.
+  support_contact: drpsupport@reliaquest.com
+  support_contact_source: the 401 body returned by https://portal-digitalshadows.com/api/
+deprecated_operations: []
+deprecated_operations_note: No OpenAPI is published, so no operation-level deprecation can be derived.
+x-evidence:
+- url: https://status.digitalshadows.com/
+  http_status: 200
+- url: https://status.digitalshadows.com/api/v2/status.json
+  http_status: 404
+- url: https://portal-digitalshadows.com/api/
+  http_status: 401
+- url: https://reliaquest.com/solution/digital-shadows/
+  http_status: 200

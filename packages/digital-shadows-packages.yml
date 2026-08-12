@@ -1,0 +1,108 @@
+generated: '2026-08-12'
+method: searched
+source: https://github.com/digitalshadows
+note: >-
+  Digital Shadows publishes no client library to npm, PyPI, RubyGems, Maven Central,
+  NuGet, Packagist, crates.io or pkg.go.dev. Every probe returned 404 (see
+  registry_probes below). The first-party client surface is distributed as source
+  from the github.com/digitalshadows organization and as a packaged connector on
+  Splunkbase. The PyPI package named `searchlight-api` is NOT Digital Shadows —
+  it is Conductor's Searchlight SEO API client
+  (https://github.com/Conductor/searchlight-api-client-python) — and is deliberately
+  excluded here.
+packages:
+- language: python
+  registry: github
+  name: shadowline
+  repo: https://github.com/digitalshadows/shadowline-api
+  url: https://github.com/digitalshadows/shadowline-api
+  install: pip install git+https://github.com/digitalshadows/shadowline-api.git
+  official: true
+  official_evidence: >-
+    Published under the digitalshadows GitHub organization; setup.py declares
+    license "Copyright (c) 2019 Digital Shadows Ltd" and author/maintainer emails
+    on the digitalshadows.com domain.
+  description: >-
+    Python library and CLI wrapper for the Digital Shadows SearchLight Portal API.
+    Ships the `shadowline` console entry point.
+  version: 0.0.1
+  version_source: https://raw.githubusercontent.com/digitalshadows/shadowline-api/master/VERSION
+  published: '2021-04-06'
+  published_source: last commit on master (no tags, no GitHub releases)
+  registry_metadata: null
+  currency_note: >-
+    Not published to PyPI (pypi.org/pypi/shadowline/json -> 404), so there is no
+    registry metadata endpoint to date. VERSION has stood at 0.0.1 since the repo
+    was created and the last commit to master is 2021-04-06 — five years stale
+    against an API whose media type has since advanced to vnd.polaris-v38+json.
+    This is the strongest decay signal available on this provider's SDK surface.
+- language: python
+  registry: github
+  name: splunk-soar-digitalshadows
+  repo: https://github.com/digitalshadows/splunk-soar-digitalshadows
+  url: https://github.com/digitalshadows/splunk-soar-digitalshadows
+  install: install from Splunkbase app 6008, or clone the repo into the SOAR apps directory
+  official: true
+  official_evidence: >-
+    Published under the digitalshadows GitHub organization; digital_shadows.json
+    declares publisher "Digital Shadows Ltd." and product_vendor "Digital Shadows".
+  description: >-
+    Splunk SOAR (formerly Phantom) connector for the SearchLight API. Bundles a
+    reusable `dsapi` client package (services for incidents, intel-incidents,
+    data breaches, breach records, breach usernames, exposed ports, SSL and
+    vulnerabilities, and cross-entity search).
+  version: 2.0.0
+  version_source: https://api.github.com/repos/digitalshadows/splunk-soar-digitalshadows/tags
+  published: '2024-02-21'
+  published_source: last commit on main (tag 2.0.0; no GitHub releases published)
+  registry_metadata: null
+  currency_note: >-
+    digital_shadows.json in the repo declares app_version 2.0.2 while the only git
+    tag is 2.0.0 — the repo and its own manifest disagree. The Splunkbase
+    distribution of the same app (uid 6008) is further ahead at 2.2.4, so the
+    public source repo lags the shipped connector by two minor versions.
+- language: python
+  registry: splunkbase
+  name: Digital Shadows (Splunk SOAR connector)
+  url: https://splunkbase.splunk.com/app/6008
+  install: install from Splunkbase into Splunk SOAR
+  official: true
+  official_evidence: >-
+    Splunkbase app 6008, appid 8cebdfd7-afe9-48eb-b840-2d98f860ed79 — the same
+    appid declared in digitalshadows/splunk-soar-digitalshadows/digital_shadows.json.
+  description: >-
+    Packaged Splunk SOAR distribution of the SearchLight connector, exposing 17
+    actions over the SearchLight API.
+  version: 2.2.4
+  version_source: https://splunkbase.splunk.com/api/v1/app/6008/release/
+  published: '2026-07-21'
+  published_source: >-
+    app record updated_time from https://splunkbase.splunk.com/api/v1/app/6008/ —
+    Splunkbase's release endpoint returns version names with null published_time,
+    so the app-level update date is used and is an upper bound, not the exact
+    release date of 2.2.4.
+  registry_metadata: https://splunkbase.splunk.com/api/v1/app/6008/
+registry_probes:
+- registry: pypi
+  queries: [shadowline, shadowline-api, digitalshadows, digital-shadows]
+  status: 404
+- registry: pypi
+  queries: [searchlight-api]
+  status: 200
+  result: not-first-party
+  note: Conductor Searchlight SEO API client, author Dan Goodman — unrelated to Digital Shadows.
+- registry: npm
+  queries: [digitalshadows, searchlight-api, '@digitalshadows/sdk']
+  status: 404
+- registry: rubygems
+  status: not-probed
+  note: No Ruby client is referenced anywhere in the provider's repos or integration docs.
+third_party_clients:
+- name: DigitalShadows2TH
+  url: https://github.com/TheHive-Project/DigitalShadows2TH
+  official: false
+  note: Community alert feeder for TheHive; wraps the SearchLight API.
+- name: Cortex XSOAR Digital Shadows integration
+  url: https://xsoar.pan.dev/docs/reference/integrations/digital-shadows
+  official: false
+  note: Palo Alto Networks-maintained content pack.

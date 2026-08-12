@@ -1,0 +1,67 @@
+generated: '2026-08-12'
+method: probed
+source: https://portal-digitalshadows.com/api/
+format: vendor-json
+rfc9457: false
+note: >-
+  Digital Shadows publishes no public error reference — the SearchLight API doc is
+  inside the authenticated portal. This catalogue is built from an anonymous live
+  probe of the API origin plus the status codes the provider's own published clients
+  branch on. It is deliberately short: only errors with real observed or
+  first-party-coded evidence are listed. No error was inferred from a spec, because
+  there is no public spec.
+envelope:
+  content_type: application/json;charset=UTF-8
+  fields:
+  - name: code
+    type: string
+    description: Vendor error code, observed form PS<NNN>.
+  - name: status
+    type: integer
+    description: Mirrors the HTTP status code.
+  - name: message
+    type: string
+    description: Human-readable explanation, including a support contact where relevant.
+  observed_verbatim: >-
+    {"code":"PS491","status":401,"message":"Failed to authenticate, details are
+    either incorrect (username and/or password) or the account is locked/disabled.
+    Please contact drpsupport@reliaquest.com..."}
+problems:
+- status: 401
+  code: PS491
+  title: Failed to authenticate
+  detail: >-
+    Credentials are missing or incorrect, or the account is locked or disabled.
+  remediation: >-
+    Re-issue the API key and secret from the SearchLight portal (Stored Objects >
+    Portal > SearchLight API doc) and resend as HTTP Basic. Contact
+    drpsupport@reliaquest.com if the account is locked.
+  evidence:
+    method: live probe
+    url: https://portal-digitalshadows.com/api/
+    observed: '2026-08-12'
+- status: 429
+  code: null
+  title: Rate limited
+  detail: >-
+    The caller has exceeded the request allowance while scrolling a paginated
+    collection.
+  remediation: >-
+    Back off and retry. The provider's own SOAR connector sleeps 1 second and
+    resumes the scroll from the same offset.
+  evidence:
+    method: first-party client source
+    url: https://github.com/digitalshadows/splunk-soar-digitalshadows/blob/main/dsapi/service/ds_base_service.py
+    observed: 'elif int(response[''status'']) == 429: time.sleep(1)'
+error_handling_contract:
+  success_range: 200-299
+  post_success_codes: [200, 204]
+  client_behaviour: >-
+    DSBaseService._request raises on any non-2xx and surfaces body["message"];
+    _request_post treats only 200 and 204 as success. This confirms `message` is
+    present on every error body.
+gaps:
+- >-
+  The full PS<NNN> code registry is not public. Only PS491 is observable
+  anonymously. A published, versioned error-code reference outside the portal is
+  the single cheapest documentation win available to this provider.

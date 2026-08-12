@@ -1,0 +1,131 @@
+generated: '2026-08-12'
+method: probed
+source: live HTTP probe
+summary:
+  hits: 0
+  note: >-
+    No /.well-known/ document is served on any Digital Shadows host. No WellKnown,
+    SecurityTxt, APICatalog or AgentCard pointer is emitted in apis.yml — this file
+    records an ABSENCE, and a recorded absence must never be wired as a presence.
+    portal-digitalshadows.com answers HTTP 200 for every path, but the body is the
+    2,288-byte Angular single-page-app shell (text/html, <title>Loading...</title>),
+    not a document; those rows are recorded as soft-200 misses.
+hosts:
+- host: https://portal-digitalshadows.com
+  role: customer portal + API host
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell, not a security.txt.
+  - path: /.well-known/openid-configuration
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell.
+  - path: /.well-known/api-catalog
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell.
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell — the dominant A2A false positive. No agent card exists.
+  - path: /.well-known/agent.json
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell.
+  - path: /llms.txt
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell.
+  - path: /openapi.json
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell; does not parse as OpenAPI.
+  - path: /swagger.json
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell; does not parse as OpenAPI.
+  - path: /api-docs
+    status: 200
+    result: miss
+    content_type: text/html
+    note: SPA catch-all shell; does not parse as OpenAPI.
+  - path: /api/
+    status: 401
+    result: gated
+    content_type: application/json;charset=UTF-8
+    note: >-
+      Real API origin. Returns {"code":"PS491","status":401,"message":"Failed to
+      authenticate..."} referring the caller to drpsupport@reliaquest.com.
+- host: https://reliaquest.com
+  role: acquirer / successor product site
+  attribution: >-
+    ReliaQuest acquired Digital Shadows in July 2022. These rows are recorded for
+    completeness only. reliaquest.com serves an llms.txt (200, 54,951 bytes) but it
+    is a ReliaQuest corporate document, NOT a Digital Shadows API artifact, so it is
+    deliberately not saved to llms/ or pointed at from apis.yml.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    result: out-of-scope
+    content_type: text/plain
+candidate_hosts:
+- host: https://api.searchlight.app
+  attribution: unconfirmed
+  note: >-
+    Probed because "SearchLight" is the Digital Shadows product name. The host is a
+    live JSON API that returns 401 with a {status,message,timestamp,request-id}
+    envelope on every path, including all /.well-known/* paths and /openapi.json,
+    /swagger.json, /api-docs. Its TLS certificate (CN=searchlight-api.searchlight.app,
+    Amazon RSA 2048 M04) carries no organization identity, and no first-party Digital
+    Shadows source or documentation references this host — every first-party client
+    targets portal-digitalshadows.com. It is therefore NOT recorded as a Digital
+    Shadows baseURL. Attribution would require confirmation from the provider.
+  documents:
+  - path: /openapi.json
+    status: 401
+  - path: /swagger.json
+    status: 401
+  - path: /v1/openapi.json
+    status: 401
+  - path: /api-docs
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+  - path: /llms.txt
+    status: 401
