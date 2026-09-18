@@ -157,3 +157,5 @@ x-contract-discovery:
   - url: https://portal-digitalshadows.com/.well-known/agent-card.json
     status: 200
     note: HTML SPA shell, rejected as a false positive
+x-parent: reliaquest
+x-relationship: acquisition
