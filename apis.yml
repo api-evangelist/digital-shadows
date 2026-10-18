@@ -50,6 +50,16 @@ tags:
 - Threat Intelligence
 - Digital Risk Protection
 - Dark Web Monitoring
+- Data Breaches
+- Brand Protection
+- Security Operations
+- Vulnerability Intelligence
+tags_raw:
+- Company
+- Cybersecurity
+- Threat Intelligence
+- Digital Risk Protection
+- Dark Web Monitoring
 - Data Breach
 - Brand Protection
 - Security Operations
@@ -68,6 +78,11 @@ apis:
   humanURL: https://portal-digitalshadows.com/
   baseURL: https://portal-digitalshadows.com/api/
   tags:
+  - Threat Intelligence
+  - Digital Risk Protection
+  - Data Breaches
+  - Incidents
+  tags_raw:
   - Threat Intelligence
   - Digital Risk Protection
   - Data Breach
