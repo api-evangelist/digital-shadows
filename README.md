@@ -64,5 +64,100 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Digital Shadows is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/digital-shadows_stock/
+Digital Shadows is a London-founded digital risk protection (DRP) company whose SearchLight platform monitors the open, deep and dark web for data leakage, exposed credentials, brand impersonation, exposed infrastructure and threat-actor activity affecting a customer's organization. ReliaQuest acquired Digital Shadows in July 2022 and the entity now trades as ReliaQuest UK Limited, with SearchLight folded into ReliaQuest GreyMatter Digital Risk Protection. The SearchLight Portal API remains live at portal-digitalshadows.com/api/ and is consumed by first-party tooling (the shadowline Python CLI and the Splunk SOAR connector) and by a wide third-party integration surface (Cortex XSOAR, ThreatConnect, Splunk, Sekoia, Axonius, TheHive, Atlassian Marketplace). The API reference itself is published only inside the authenticated customer portal.
+
+**Areas:** Company · Cybersecurity · Threat Intelligence · Digital Risk Protection · Dark Web Monitoring · Data Breach · Brand Protection · Security Operations · Vulnerability Intelligence
+
+## Digital Shadows on APIs.io
+
+Everything profiled for Digital Shadows is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/digital-shadows/](https://apis.io/providers/digital-shadows/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [SearchLight Portal API](https://apis.io/apis/digital-shadows/searchlight-portal-api/) — The Digital Shadows SearchLight Portal API — the REST surface behind the SearchLight / GreyMatter DRP portal. Exposes incidents, intelligence incidents,…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Digital Shadows Authentication](https://apis.io/security/digital-shadows/digital-shadows-authentication/)
+- [Digital Shadows Domain Security](https://apis.io/security/digital-shadows/digital-shadows-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Digital Shadows Plans Pricing](https://apis.io/plans/digital-shadows/digital-shadows-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Digital Shadows Rate Limits](https://apis.io/rate-limits/digital-shadows/digital-shadows-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://reliaquest.com/solutions/digital-risk-protection/)
+- [Blog](https://reliaquest.com/blog/)
+- [Privacy policy](https://reliaquest.com/privacy-policy/)
+- [GitHub](https://github.com/digitalshadows)
+- [Status](https://status.digitalshadows.com/)
+
+## API Evangelist rating
+
+**Kin Score 20.1** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 0.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 38.1 |
+| Access clarity | 10.5 |
+
+**Agent readiness 6.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/digital-shadows/](https://apis.io/providers/digital-shadows/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Digital Shadows: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/digital-shadows/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
